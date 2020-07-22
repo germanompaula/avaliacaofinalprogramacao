@@ -16,9 +16,11 @@ public class InimigoController : MonoBehaviour
     public float hp, hpMax = 100;
     public float damage = 20;
     public string damageTag;
-    public Image vida;// seve para mostrar a quantidade de vida do inimigo
+    public Image vida;// serve para mostrar a quantidade de vida do inimigo
+    public AudioSource explosao;
 
-    public GameObject pontuacao;
+
+    private GameObject pontuacao;
 
 
 
@@ -66,6 +68,8 @@ public class InimigoController : MonoBehaviour
         {
             animator.SetBool("morto", true);
             Invoke("Destruir", .7f);
+            explosao.Play();
+
 
             pontuacao.GetComponent<Pontuacao>().PontuacaoNave(1);
         }

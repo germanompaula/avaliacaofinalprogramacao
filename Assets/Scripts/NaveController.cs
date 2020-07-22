@@ -8,11 +8,11 @@ public class NaveController: MonoBehaviour
 {
     [Header("Tiro")]
     public GameObject prefabProjetil; //Objeto do projétil
-    /*private bool estaAtirando = false; //Controle da animação
-    //private float tempoUltimoTiro; //Quanto tempo se passou desde o último tiro*/
     public float velocidadeProjetil; //Velocidade do projétil
     public GameObject shotPoint; //Local por onde sai o projétil
-    public float tempoDoTiro; 
+    public float tempoDoTiro;
+    public AudioSource tiro;
+
 
 
 
@@ -20,12 +20,14 @@ public class NaveController: MonoBehaviour
     [Header("Movimento")]
     public int direccaoX;
     public int direccaoY;
-    public float speeed;
+    public float speed;
 
     [Header("Componentes de Vida")]
     public int unidadeVida = 3;
     public Animator animator;
-    public TMP_Text vidaText;
+    //public Text vidaText;
+    public AudioSource explosao;
+
 
 
     void Start()
@@ -37,9 +39,9 @@ public class NaveController: MonoBehaviour
     void Update()
     {
         direcao();
-        transform.Translate(direccaoX*Time.deltaTime*speeed,direccaoY*Time.deltaTime*speeed,0);
+        transform.Translate(direccaoX*Time.deltaTime*speed,direccaoY*Time.deltaTime*speed,0);
         Atirar();
-        vidaText.text = unidadeVida.ToString();
+        //vidaText.text = unidadeVida.ToString();
     }
 
     public void direcao()
@@ -71,14 +73,10 @@ public class NaveController: MonoBehaviour
             GameObject projectile = Instantiate(prefabProjetil, shotPoint.transform.position, transform.rotation);
 
             projectile.GetComponent<Rigidbody2D>().velocity = new Vector2(0, velocidadeProjetil);
-
-            //estaAtirando = true;
-            //tempoDoTiro = .7f;
+            tiro.Play();
 
         }
-        //tempoUltimoTiro -= Time.deltaTime;
-
-        //if (tempoUltimoTiro <= 0) estaAtirando = false;
+       
     }
 
      
@@ -95,6 +93,8 @@ public class NaveController: MonoBehaviour
             animator.SetBool("morto", true);
             Invoke("Perdeu", 1.5f);
             gameObject.GetComponent<PolygonCollider2D>().enabled = false;
+            explosao.Play();
+
 
         }
     }
